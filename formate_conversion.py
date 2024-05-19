@@ -24,6 +24,9 @@ SUPPORTED_CONVERT_FORMATS = [
     "EMF", "J2K", "PCX", "PCT"
 ]
 
+# Default high quality option
+DEFAULT_QUALITY = 95
+
 # File uploader
 uploaded_file = st.file_uploader("Upload an image", type=SUPPORTED_UPLOAD_FORMATS)
 
@@ -47,7 +50,9 @@ if uploaded_file is not None:
                 c.save()
                 mime = "application/pdf"
             else:
-                image.save(converted_image, format=format_to_convert)
+                # Set high quality option
+                quality = DEFAULT_QUALITY
+                image.save(converted_image, format=format_to_convert, quality=quality)
                 mime = f"image/{format_to_convert.lower()}"
             
             converted_image.seek(0)
