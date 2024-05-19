@@ -1,11 +1,7 @@
 import streamlit as st
 from PIL import Image, UnidentifiedImageError
-import pillow_heif
 import io
 from reportlab.pdfgen import canvas
-
-# Register HEIF plugin
-pillow_heif.register_heif_opener()
 
 # Title of the app
 st.title("Image Format Converter")
@@ -50,8 +46,13 @@ if uploaded_file is not None:
             
             # Handle PDF conversion
             if format_to_convert == "PDF":
+                # Save image to temporary file
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as temp_file:
+                    temp_file.write(image_data)
+                    temp_file_path = temp_file.name
+
                 c = canvas.Canvas(converted_image)
-                c.drawImage(image_stream, 0, 0)
+                c.drawImage(temp_file_path, 0, 0)
                 c.save()
                 mime = "application/pdf"
             else:
