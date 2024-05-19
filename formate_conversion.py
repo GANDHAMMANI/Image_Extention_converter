@@ -12,14 +12,14 @@ st.title("Image Format Converter")
 
 # Supported image formats for upload
 SUPPORTED_UPLOAD_FORMATS = [
-    "jpeg", "jpg", "png", "bmp", "gif", "tiff", "tif", "webp", "ico", "pdf",
+    "jpeg", "jpg", "png", "bmp", "tiff", "tif", "webp", "ico", "pdf",
     "eps", "svg", "psd", "heic", "hdr", "exr", "tga", "wmf", "emf", 
     "j2k", "pcx", "pct"
 ]
 
 # Supported image formats for conversion
 SUPPORTED_CONVERT_FORMATS = [
-    "JPEG", "PNG", "BMP", "GIF", "TIFF", "WEBP", "ICO", "PDF",
+    "JPEG", "PNG", "BMP", "TIFF", "WEBP", "ICO", "PDF",
     "EPS", "SVG", "PSD", "HEIC", "HDR", "EXR", "TGA", "WMF", 
     "EMF", "J2K", "PCX", "PCT"
 ]
@@ -32,8 +32,13 @@ uploaded_file = st.file_uploader("Upload an image", type=SUPPORTED_UPLOAD_FORMAT
 
 if uploaded_file is not None:
     try:
-        # Attempt to open the uploaded file as an image
-        image = Image.open(uploaded_file)
+        # Read image data from the uploaded file
+        image_data = uploaded_file.read()
+        # Use io.BytesIO to create a byte stream
+        image_stream = io.BytesIO(image_data)
+        # Open the image using PIL's Image.open()
+        image = Image.open(image_stream)
+        
         st.image(image, caption="Uploaded Image", use_column_width=True)
 
         # Select the format to convert to
@@ -46,7 +51,7 @@ if uploaded_file is not None:
             # Handle PDF conversion
             if format_to_convert == "PDF":
                 c = canvas.Canvas(converted_image)
-                c.drawImage(uploaded_file, 0, 0)
+                c.drawImage(image_stream, 0, 0)
                 c.save()
                 mime = "application/pdf"
             else:
