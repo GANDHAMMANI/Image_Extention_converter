@@ -2,7 +2,8 @@ import streamlit as st
 from PIL import Image, UnidentifiedImageError
 import io
 from reportlab.pdfgen import canvas
-import tempfile  # Add this line
+import tempfile
+import pyheif  # Import pyheif package
 
 # Title of the app
 st.title("Image Format Converter")
@@ -31,11 +32,24 @@ if uploaded_file is not None:
     try:
         # Read image data from the uploaded file
         image_data = uploaded_file.read()
-        # Use io.BytesIO to create a byte stream
-        image_stream = io.BytesIO(image_data)
-        # Open the image using PIL's Image.open()
-        image = Image.open(image_stream)
-        
+
+        # Handle HEIC file
+        if uploaded_file.type == 'heic':
+            heif_file = pyheif.read_heif(image_data)
+            image = Image.frombytes(
+                heif_file.mode, 
+                heif_file.size, 
+                heif_file.data,
+                "raw",
+                heif_file.mode,
+                heif_file.stride,
+            )
+        else:
+            # Use io.BytesIO to create a byte stream
+            image_stream = io.BytesIO(image_data)
+            # Open the image using PIL's Image.open()
+            image = Image.open(image_stream)
+
         st.image(image, caption="Uploaded Image", use_column_width=True)
 
         # Select the format to convert to
