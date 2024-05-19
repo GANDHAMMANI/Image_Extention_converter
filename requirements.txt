@@ -5,3 +5,4 @@ pdf2image
 reportlab
 cairocffi
 cairosvg
+libcairo2-dev
