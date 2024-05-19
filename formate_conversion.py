@@ -10,16 +10,12 @@ st.title("Image Format Converter")
 
 # Supported image formats for upload
 SUPPORTED_UPLOAD_FORMATS = [
-    "jpeg", "jpg", "png", "bmp", "gif", "tiff", "tif", "webp", "ico", "pdf",
-    "eps", "svg", "psd", "heic", "hdr", "exr", "tga", "wmf", "emf", 
-    "j2k", "pcx", "pct"
+    "jpeg", "jpg", "png", "bmp", "tiff", "tif", "webp", "pdf"
 ]
 
 # Supported image formats for conversion
 SUPPORTED_CONVERT_FORMATS = [
-    "JPEG", "PNG", "BMP", "GIF", "TIFF", "WEBP", "ICO", "PDF",
-    "EPS", "SVG", "PSD", "HEIC", "HDR", "EXR", "TGA", "WMF", 
-    "EMF", "J2K", "PCX", "PCT"
+    "JPEG", "PNG", "BMP", "TIFF", "WEBP", "PDF"
 ]
 
 # Default high quality option
