@@ -2,6 +2,7 @@ import streamlit as st
 from PIL import Image, UnidentifiedImageError
 import io
 from reportlab.pdfgen import canvas
+import cairosvg
 
 # Title of the app
 st.title("Image Format Converter")
@@ -16,7 +17,7 @@ SUPPORTED_UPLOAD_FORMATS = [
 # Supported image formats for conversion
 SUPPORTED_CONVERT_FORMATS = [
     "JPEG", "PNG", "BMP", "GIF", "TIFF", "WEBP", "ICO", "PDF",
-    "EPS", "PSD", "HEIC", "HDR", "EXR", "TGA", "WMF", 
+    "EPS", "SVG", "PSD", "HEIC", "HDR", "EXR", "TGA", "WMF", 
     "EMF", "J2K", "PCX", "PCT"
 ]
 
@@ -44,9 +45,17 @@ if uploaded_file is not None:
             # Convert the image
             converted_image = io.BytesIO()
             
-            # Handle unsupported SVG conversion
+            # Handle SVG conversion using CairoSVG
             if format_to_convert == "SVG":
-                st.error("Conversion to SVG is not supported by PIL. Please choose another format.")
+                # Convert the PIL image to SVG using CairoSVG
+                svg_data = cairosvg.convert(
+                    bytestring=image_data,
+                    output_format="svg",
+                    dpi=96  # Set the DPI to match Streamlit's default DPI
+                )
+                # Write the SVG data to the converted_image buffer
+                converted_image.write(svg_data.encode("utf-8"))
+                mime = "image/svg+xml"
             else:
                 # Handle PDF conversion
                 if format_to_convert == "PDF":
@@ -60,15 +69,15 @@ if uploaded_file is not None:
                     image.save(converted_image, format=format_to_convert, quality=quality)
                     mime = f"image/{format_to_convert.lower()}"
                 
-                converted_image.seek(0)
-                
-                # Provide download link
-                st.download_button(
-                    label="Download Converted Image",
-                    data=converted_image,
-                    file_name=f"converted_image.{format_to_convert.lower()}",
-                    mime=mime
-                )
+            converted_image.seek(0)
+            
+            # Provide download link
+            st.download_button(
+                label="Download Converted Image",
+                data=converted_image,
+                file_name=f"converted_image.{format_to_convert.lower()}",
+                mime=mime
+            )
     except UnidentifiedImageError:
         st.error("The uploaded file is not a valid image or is not supported. Please upload a valid image file.")
     except Exception as e:
