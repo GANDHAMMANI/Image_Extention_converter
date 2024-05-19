@@ -69,15 +69,15 @@ if uploaded_file is not None:
                     image.save(converted_image, format=format_to_convert, quality=quality)
                     mime = f"image/{format_to_convert.lower()}"
                 
-            converted_image.seek(0)
-            
-            # Provide download link
-            st.download_button(
-                label="Download Converted Image",
-                data=converted_image,
-                file_name=f"converted_image.{format_to_convert.lower()}",
-                mime=mime
-            )
+                converted_image.seek(0)
+                
+                # Provide download link
+                st.download_button(
+                    label="Download Converted Image",
+                    data=converted_image,
+                    file_name=f"converted_image.{format_to_convert.lower()}",
+                    mime=mime
+                )
     except UnidentifiedImageError:
         st.error("The uploaded file is not a valid image or is not supported. Please upload a valid image file.")
     except Exception as e:
