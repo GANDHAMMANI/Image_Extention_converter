@@ -2,7 +2,6 @@ import streamlit as st
 from PIL import Image, UnidentifiedImageError
 import pillow_heif
 import io
-import pdf2image
 from reportlab.pdfgen import canvas
 
 # Register HEIF plugin
