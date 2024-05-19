@@ -3,5 +3,5 @@ pillow
 pillow-heif
 pdf2image
 reportlab
-CairoSVG
 cairocffi
+cairosvg
