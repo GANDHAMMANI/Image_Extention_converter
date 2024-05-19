@@ -2,6 +2,7 @@ import streamlit as st
 from PIL import Image, UnidentifiedImageError
 import io
 from reportlab.pdfgen import canvas
+import tempfile  # Add this line
 
 # Title of the app
 st.title("Image Format Converter")
