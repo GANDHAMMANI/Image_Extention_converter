@@ -4,5 +4,4 @@ pillow-heif
 pdf2image
 reportlab
 CairoSVG
-cairosvg
 cairocffi
