@@ -34,7 +34,7 @@ if uploaded_file is not None:
         image_data = uploaded_file.read()
 
         # Handle HEIC file
-        if uploaded_file.type == 'heic':
+        if uploaded_file.type in ['heic', 'image/heic']:
             heif_file = pyheif.read_heif(image_data)
             image = Image.frombytes(
                 heif_file.mode, 
