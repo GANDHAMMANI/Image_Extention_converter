@@ -1,5 +1,5 @@
-streamlit
-pillow
-pillow-heif
-pdf2image
-reportlab
+streamlit==1.14.0
+pillow==9.1.1
+pillow-heif==0.8.2
+pdf2image==1.16.0
+reportlab==3.6.12
