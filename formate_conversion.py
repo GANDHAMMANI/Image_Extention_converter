@@ -2,6 +2,7 @@ import streamlit as st
 from PIL import Image, UnidentifiedImageError
 import io
 from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
 import tempfile
 import pyheif
 
@@ -59,11 +60,30 @@ if uploaded_file is not None:
             if format_to_convert == "PDF":
                 # Save image to temporary file
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as temp_file:
-                    temp_file.write(image_data)
+                    image.save(temp_file, format="JPEG")
                     temp_file_path = temp_file.name
+                
+                # Create a PDF canvas with A4 size
+                c = canvas.Canvas(converted_image, pagesize=letter)
+                width, height = letter
 
-                c = canvas.Canvas(converted_image)
-                c.drawImage(temp_file_path, 0, 0)
+                # Adjust the image size and position
+                img_width, img_height = image.size
+                aspect_ratio = img_width / img_height
+
+                # Fit image to page size while maintaining aspect ratio
+                if img_width > img_height:
+                    img_width = width
+                    img_height = width / aspect_ratio
+                else:
+                    img_height = height
+                    img_width = height * aspect_ratio
+                
+                x = (width - img_width) / 2
+                y = (height - img_height) / 2
+
+                c.drawImage(temp_file_path, x, y, img_width, img_height)
+                c.showPage()
                 c.save()
                 mime = "application/pdf"
             else:
