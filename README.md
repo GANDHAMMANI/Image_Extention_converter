@@ -19,7 +19,7 @@ This Streamlit app allows users to upload an image, convert it to a different fo
 - **Convert and Download:** Press the "Convert" button. Once converted, a download link is provided for the new file.
 
 ## Demo
-Check out the deployed app: [Image Converter ](https://your-streamlit-app-link](https://imageextentionconverter-saketh07.streamlit.app/)
+Check out the deployed app: [Image Converter ](https://imageextentionconverter-saketh07.streamlit.app/)
 ## Installation Guide
 
 Follow these steps to install and set up the Image Format Converter app.
